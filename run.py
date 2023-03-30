@@ -8,11 +8,11 @@ load_dotenv(find_dotenv())
 
 TIMEOUT = 15
 USERNAME = os.getenv('USERNAME')
-
+dirname = os.path.dirname(__file__)
 
 def scrape():
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")   # Uncomment this option to run it headless
+    options.add_argument("--headless")   # Uncomment this option to run it headless
     options.add_argument('--no-sandbox')
     options.add_argument("--log-level=3")
     mobile_emulation = {
@@ -34,9 +34,10 @@ def scrape():
     total_followers = followers_span.get_attribute('title')
 
     print('[Info] - Saving...')
+    print('[Info] - Total of ' + total_followers + ' followers')
     print('[DONE] - Your total followers are saved in followers.txt file!')
 
-    with open('followers.txt', 'r+') as file:
+    with open(os.path.join(dirname, 'followers.txt'), 'r+') as file:
         file.seek(0, 0)  
         file.write(total_followers) 
 
