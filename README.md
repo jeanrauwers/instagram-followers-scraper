@@ -4,6 +4,8 @@ This python script can automatically scrape a user total followers and save it o
 
 # How to use:
 
+Required to have Python installed -> https://www.python.org
+
 1. Install requirements using terminal or command line. You should run this command `pip install -r requirements.txt`.
 2. Rename .env.example to .env and add ig username in example file.
 3. Open a terminal or cmd again and run the bot using this command: `python run.py`.
