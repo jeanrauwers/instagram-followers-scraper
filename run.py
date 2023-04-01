@@ -1,6 +1,6 @@
+import os
+import sys
 import time
-import os
-import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -9,12 +9,13 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-TIMEOUT = 15
 USERNAME = os.getenv('USERNAME')
 dirname = os.path.dirname(__file__)
 
 
-def scrape():
+def scrape(instagram_account=None):
+    if not instagram_account:
+        instagram_account = USERNAME
     options = webdriver.ChromeOptions()
     # Uncomment this option to run it headless
     options.add_argument("--headless")
@@ -25,12 +26,11 @@ def scrape():
         '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36')
 
     bot = webdriver.Chrome(executable_path=CM().install(), options=options)
-    instagram = 'https://www.instagram.com/'
-    url = instagram + str(USERNAME)
+    instagram_url = f'https://www.instagram.com/{instagram_account}/'
 
-    print('[Info] - Scraping Followers...')
+    print(f'[Info] - Scraping followers for {instagram_account}...')
     try:
-        bot.get(url)
+        bot.get(instagram_url)
         time.sleep(3.5)
         followers_span = bot.find_element(By.CSS_SELECTOR,
                                           "span[title]")
@@ -39,16 +39,21 @@ def scrape():
 
         print(total_followers)
         print('[Info] - Saving...')
-        print('[Info] - Total of ' + total_followers + ' followers')
+        print(
+            f'[Info] - Total of {total_followers} followers for {instagram_account}')
 
-        with open(os.path.join(dirname, 'followers.txt'), 'r+') as file:
-            file.seek(0, 0)
+        with open(os.path.join(dirname, f'{instagram_account}_followers.txt'), 'w+') as file:
             file.write(total_followers)
-        print('[DONE] - Your total followers are saved in followers.txt file!')
+        print(
+            f'[DONE] - Your total followers are saved in {instagram_account}_followers.txt file!')
 
     except NoSuchElementException:
         print(NoSuchElementException)
 
 
 if __name__ == '__main__':
-    scrape()
+    if len(sys.argv) > 1:
+        account_name = sys.argv[1]
+    else:
+        account_name = None
+    scrape(account_name)
