@@ -1,10 +1,10 @@
 # instagram-get-follower-scraper
 
-This python script can automatically scrape a user total followers and save it on a text file
+This script uses Selenium and the ChromeDriver to scrape the number of followers for a given Instagram account. It saves the number of followers to a text file called "followers.txt" in the same directory as the script.
 
 # How to use:
 
-Required to have Python installed -> https://www.python.org
+Required to have Python 3 installed -> https://www.python.org
 
 1. Install requirements using terminal or command line. You should run this command `pip install -r requirements.txt`.
 2. Rename .env.example to .env and add ig username in example file.
